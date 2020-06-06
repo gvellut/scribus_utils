@@ -1,0 +1,12 @@
+#---my_text_frame
+
+
+<ps n="My Style" />Hello World.
+
+Second line with My Style
+<ps n="" />This line has no style <t f="Times New Roman" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change
+
+
+#---#3__my_text_frame
+<ps n="My Style" />Hello World.
+No no no no jungle
