@@ -9,29 +9,29 @@
 # the Free Software Foundation, either version 2 of the License, or
 # (at your option) any later version.
 
-from scribus import *
+import scribus as sc
 
-if haveDoc():
-    nbrSelected = selectionCount()
+if sc.haveDoc():
+    nbrSelected = sc.selectionCount()
 
 objList = []
 
 for i in range(nbrSelected):
-    objList.append(getSelectedObject(i))
+    objList.append(sc.getSelectedObject(i))
 
 for i in range(nbrSelected):
     try:
         obj = objList[i]
-        setScaleImageToFrame(True, False, obj)
-        scaleX, scaleY = getImageScale(obj)
-        setScaleImageToFrame(False, False, obj)
+        sc.setScaleImageToFrame(True, False, obj)
+        scaleX, scaleY = sc.getImageScale(obj)
+        sc.setScaleImageToFrame(False, False, obj)
         if scaleX > scaleY:
             scale = scaleX
-            setImageScale(scale, scale, obj)
+            sc.setImageScale(scale, scale, obj)
         elif scaleY > scaleX:
             scale = scaleY
-            setImageScale(scale, scale, obj)
-        docChanged(1)
-        setRedraw(True)
-    except:
+            sc.setImageScale(scale, scale, obj)
+        sc.docChanged(1)
+        sc.setRedraw(True)
+    except Exception:
         nothing = "nothing"

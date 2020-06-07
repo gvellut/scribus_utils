@@ -10,12 +10,13 @@ import scribus as sc
 KEY_PREFIX = "#---"
 COPY_PREFIX = "Copy of "
 
-# __file__ is not defined but the dir of the script being exed is in sys.path 0
+# __file__ is not defined when running from Scribus but the dir of
+# the script being executed is in sys.path 0
 data_file = os.path.join(sys.path[0], "test_data.txt")
 
 
 def prep():
-    paragraph_styles = sc.getParagraphStyles()
+    paragraph_styles = set(sc.getParagraphStyles())
     char_styles = set(sc.getCharStyles())
     return paragraph_styles, char_styles
 
@@ -118,7 +119,6 @@ def main(argv):
             add_text(key, texts[key], pstyles, cstyles)
 
     sc.docChanged(True)
-    sc.statusMessage("Import done")
 
 
 def main_wrapper(argv):
