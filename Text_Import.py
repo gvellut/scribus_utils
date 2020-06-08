@@ -224,6 +224,10 @@ def _error(o, icon=sc.ICON_WARNING):
         sys.exit(1)
 
 
+def _index_items_by_page():
+    pass
+
+
 def main(argv):
     if not sc.haveDoc():
         _error(u"Need a document", sc.ICON_CRITICAL)
@@ -235,17 +239,22 @@ def main(argv):
 
     sc.setRedraw(False)
 
+    # TODO index items for pages
+    _index_items_by_page()
+
     num_selected = sc.selectionCount()
     if num_selected:
-        sc.messageBox("Debug", u"Selected %d" % num_selected)
         for i in range(num_selected):
             key = sc.getSelectedObject(i)
             if sc.getObjectType(key) != "TextFrame":
                 _error(u"Selected object with name %s not a text frame" % key)
                 continue
+            # TODO process pages later
             if key not in texts:
                 _error(u"Selected text frame with name %s not in data" % key)
                 continue
+
+            add_text(key, texts[key], pstyles, cstyles)
     else:
         # go through the texts keys
         sc.progressTotal(len(texts))
@@ -258,8 +267,6 @@ def main(argv):
                 if key.startswith("#"):
                     continue
 
-                # sc.messageBox("DEBUG", key)
-
                 # TODO keep around ? and display at the end ?
                 if not sc.objectExists(key):
                     _error(u"Object %s from data not found" % key)
@@ -271,7 +278,6 @@ def main(argv):
                 add_text(key, texts[key], pstyles, cstyles)
         finally:
             sc.deselectAll()
-            sc.docChanged(True)
 
 
 def main_wrapper(argv):
@@ -284,6 +290,8 @@ def main_wrapper(argv):
             sc.setRedraw(True)
         sc.statusMessage(u"Done")
         sc.progressReset()
+        # TODO no effect ? How to keep the asterisk ? appears then disappears
+        sc.docChanged(True)
 
 
 if __name__ == "__main__":
