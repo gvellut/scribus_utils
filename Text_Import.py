@@ -1,10 +1,31 @@
 # -*- coding: utf-8 -*-
 
+import codecs
 import os
+import re
 import sys
 import xml.etree.ElementTree as ET
 
-import scribus as sc
+try:
+    import scribus as sc
+except Exception:
+
+    class ScribusProxy(object):
+        def __getattr__(self, name):
+            if name == "messageBox":
+
+                def _messageBox(*args, **kwargs):
+                    print "MessageBox %s" % args[1]
+
+                return _messageBox
+
+            def _missing(*args, **kwargs):
+                print "%s * %r ** %r" % (name, args, kwargs)
+
+            return _missing
+
+    sc = ScribusProxy()
+
 
 # TODO tester linked frames
 
@@ -12,6 +33,22 @@ KEY_PREFIX = "#---"
 COPY_PREFIX = "Copy of "
 NO_STYLE = "Default Paragraph Style"
 DEBUG = True
+
+# spaces : snb sen sem stn stk  smi sha
+# dashes : dem den
+ENTITIES = {
+    "snb": u"\u00A0",  # non breaking
+    "sen": u"\u2002",  # en space
+    "sem": u"\u2003",  # em space
+    "stn": u"\u2009",  # thin
+    "stk": u"\u2004",  # thick 1/3
+    "smi": u"\u2005",  # mid 1/4
+    "sha": u"\u200A",  # hair
+    "dem": u"\u2014",  # em dash
+    "den": u"\u2013",  # en dash
+    "hsf": u"\u00AD",  # soft hyphen
+}
+XML_ENTITIES = set(["lt", "gt", "amp", "quot"])
 
 # __file__ is not defined when running from Scribus but the dir of
 # the script being executed is in sys.path 0
@@ -25,7 +62,7 @@ def prep():
 
 
 def read_data(data_file):
-    with open(data_file) as f:
+    with codecs.open(data_file, encoding="utf-8") as f:
         data = f.read()
 
     def wrapup(content):
@@ -40,8 +77,8 @@ def read_data(data_file):
                 content_clean = content_clean[: len(content_clean) - i]
                 break
         return (
-            "<text><paragraph>%s</paragraph></text>"
-            % "</paragraph><paragraph>".join(content_clean)
+            u"<text><paragraph>%s</paragraph></text>"
+            % u"</paragraph><paragraph>".join(content_clean)
         )
 
     lines = data.splitlines()
@@ -57,7 +94,7 @@ def read_data(data_file):
         else:
             line = line.strip()
             if not key:
-                print "No key defined for %s" % line
+                print u"No key defined for %s" % line
                 continue
             content.append(line)
     if key:
@@ -71,7 +108,8 @@ def add_text(key, text, pstyles, cstyles):
 
     errors = []
 
-    root = ET.fromstring(text)
+    text_ent = _process_entities(text)
+    root = ET.fromstring(text_ent.encode("utf-8"))
     cursor_pos = 0
     current_style = NO_STYLE
     for p in root:
@@ -82,64 +120,70 @@ def add_text(key, text, pstyles, cstyles):
         for s in p:
             if s.tag == "t":
                 if not s.text:
-                    errors.append("t tags should have text")
+                    errors.append(u"t tags should have text")
                 else:
-                    sc.insertText(s.text, -1, key)
-                    cursor_pos += len(s.text)
+                    t = s.text
+                    sc.insertText(t, -1, key)
+                    cursor_pos += len(t)
 
-                rt_l = cursor_pos - len(s.text)
-                sc.selectText(rt_l, -1, key)
-                if "f" in s.attrib:
-                    font_name = s.attrib["f"]
-                    try:
-                        sc.setFont(s.attrib["f"], key)
-                    except Exception:
-                        errors.append("Invalid font name: %s" % font_name)
-                if "c" in s.attrib:
-                    # not currently defined color name will be added with
-                    # a brown color
-                    # TODO but no way to tell ?
-                    sc.setTextColor(s.attrib["c"], key)
-                if "s" in s.attrib:
-                    font_size = s.attrib["s"]
-                    try:
-                        sc.setFontSize(int(font_size), key)
-                    except Exception:
-                        errors.append("Invalid font size: %s" % font_size)
-                sc.selectText(0, 0, key)  # deselect
+                    rt_l = cursor_pos - len(t)
+                    sc.selectText(rt_l, -1, key)
+                    if "f" in s.attrib:
+                        font_name = s.attrib["f"]
+                        try:
+                            sc.setFont(s.attrib["f"], key)
+                        except Exception:
+                            errors.append(u"Invalid font name: %s" % font_name)
+                    if "c" in s.attrib:
+                        # not currently defined color name will be added with
+                        # a brown color
+                        # TODO but no way to tell ?
+                        c = s.attrib["c"]
+                        sc.setTextColor(c, key)
+                    if "s" in s.attrib:
+                        font_size = s.attrib["s"]
+                        try:
+                            sc.setFontSize(int(font_size), key)
+                        except Exception:
+                            errors.append(u"Invalid font size: %s" % font_size)
+                    sc.selectText(0, 0, key)  # deselect
 
             elif s.tag == "cs":
                 if not s.text:
-                    errors.append("cs tags should have text")
+                    errors.append(u"cs tags should have text")
                 else:
-                    sc.insertText(s.text, -1, key)
-                    cursor_pos += len(s.text)
+                    t = s.text
+                    sc.insertText(t, -1, key)
+                    cursor_pos += len(t)
 
-                rt_l = cursor_pos - len(s.text)
-                sc.selectText(rt_l, -1, key)
-                if "n" in s.attrib:
-                    char_style = s.attrib["n"]
-                    sc.setCharacterStyle(char_style, key)
-                else:
-                    errors.append("cs tags should have a 'n' attribute")
-                sc.selectText(0, 0, key)  # deselect
+                    rt_l = cursor_pos - len(t)
+                    sc.selectText(rt_l, -1, key)
+                    if "n" in s.attrib:
+                        # TODO check if in current styles ?
+                        char_style = s.attrib["n"]
+                        sc.setCharacterStyle(char_style, key)
+                    else:
+                        errors.append(u"cs tags should have a 'n' attribute")
+                    sc.selectText(0, 0, key)  # deselect
 
             elif s.tag == "ps":
                 # change the state of the current style for this paragraph
                 # and the following
                 if "n" in p[0].attrib:
+                    # TODO check if in current styles ?
                     current_style = p[0].attrib["n"]
                     if not current_style:
                         current_style = NO_STYLE
                 else:
-                    errors.append("ps tags should have a 'n' attribute")
+                    errors.append(u"ps tags should have a 'n' attribute")
                 if s.text:
-                    errors.append("ps tags should not have text")
+                    errors.append(u"ps tags should not have text")
 
             # text as is
             if s.tail:
-                sc.insertText(s.tail, -1, key)
-                cursor_pos += len(s.tail)
+                t = s.tail
+                sc.insertText(t, -1, key)
+                cursor_pos += len(t)
 
         sc.insertText("\r", -1, key)
         cursor_pos += 1
@@ -147,11 +191,24 @@ def add_text(key, text, pstyles, cstyles):
         sc.setStyle(current_style, key)
         sc.selectText(0, 0, key)  # deselect
 
-    sc.deselectAll()
-    sc.docChanged(True)
-
     if errors:
-        _error("Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
+        _error(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
+
+
+entity_rex = re.compile(r"(&(\w+?);)", flags=re.IGNORECASE)
+
+
+def _process_entities(text):
+    def repl(mat):
+        ent = mat.group(2)
+        if ent in ENTITIES:
+            return ENTITIES[mat.group(2)]
+        elif ent in XML_ENTITIES or ent.startswith("#x"):
+            return mat.group(1)
+        else:
+            return "??"
+
+    return re.sub(entity_rex, repl, text)
 
 
 def _debug(o):
@@ -169,7 +226,7 @@ def _error(o, icon=sc.ICON_WARNING):
 
 def main(argv):
     if not sc.haveDoc():
-        _error("Need a document", sc.ICON_CRITICAL)
+        _error(u"Need a document", sc.ICON_CRITICAL)
         sys.exit(1)
 
     pstyles, cstyles = prep()
@@ -180,48 +237,52 @@ def main(argv):
 
     num_selected = sc.selectionCount()
     if num_selected:
-        sc.messageBox("Debug", "Selected %d" % num_selected)
+        sc.messageBox("Debug", u"Selected %d" % num_selected)
         for i in range(num_selected):
             key = sc.getSelectedObject(i)
             if sc.getObjectType(key) != "TextFrame":
-                _error("Selected object with name %s not a text frame" % key)
+                _error(u"Selected object with name %s not a text frame" % key)
                 continue
             if key not in texts:
-                _error("Selected text frame with name %s not in data" % key)
+                _error(u"Selected text frame with name %s not in data" % key)
                 continue
     else:
         # go through the texts keys
         sc.progressTotal(len(texts))
         progress = 0
-        for key, text in texts.items():
-            progress += 1
-            sc.progressSet(progress)
-            # TODO process pages later
-            if key.startswith("#"):
-                continue
+        try:
+            for key, text in texts.items():
+                progress += 1
+                sc.progressSet(progress)
+                # TODO process pages later
+                if key.startswith("#"):
+                    continue
 
-            # sc.messageBox("DEBUG", key)
+                # sc.messageBox("DEBUG", key)
 
-            # TODO keep around ? and display at the end ?
-            if not sc.objectExists(key):
-                _error("Object %s from data not found" % key)
-                continue
-            if sc.getObjectType(key) != "TextFrame":
-                _error("Object %s from data not a text frame" % key)
-                continue
+                # TODO keep around ? and display at the end ?
+                if not sc.objectExists(key):
+                    _error(u"Object %s from data not found" % key)
+                    continue
+                if sc.getObjectType(key) != "TextFrame":
+                    _error(u"Object %s from data not a text frame" % key)
+                    continue
 
-            add_text(key, texts[key], pstyles, cstyles)
+                add_text(key, texts[key], pstyles, cstyles)
+        finally:
+            sc.deselectAll()
+            sc.docChanged(True)
 
 
 def main_wrapper(argv):
     try:
-        sc.statusMessage("Running script...")
+        sc.statusMessage(u"Running script...")
         sc.progressReset()
         main(argv)
     finally:
         if sc.haveDoc():
             sc.setRedraw(True)
-        sc.statusMessage("Done")
+        sc.statusMessage(u"Done")
         sc.progressReset()
 
 
@@ -230,5 +291,5 @@ if __name__ == "__main__":
     # texts = read_data(data_file)
     # print (repr(texts))
 
-    # xml = '<text><paragraph><ps n="My Style" />Hello World.</paragraph><paragraph></paragraph><paragraph>Second line <t s="24">with</t> My Style</paragraph><paragraph><ps n="" />This line has no style <t f="Times New Roman" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change</paragraph></text>'
-    # root = ET.fromstring(xml)
+    # xml = u'<text><paragraph><ps n="My Style" />Hell&gt;o &dem; World.</paragraph><paragraph></paragraph><paragraph>Second line <t s="24">with</t> My Style</paragraph><paragraph><ps n="" />This line has no style <t f="Times New Roman" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change</paragraph></text>'
+    # add_text("TEST", xml, set(), set())

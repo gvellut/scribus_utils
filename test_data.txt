@@ -4,7 +4,7 @@
 <ps n="My Style" />A
 
 Second line with My Style
-<ps n="" />This line has no style <t f="Times New Roman Regular" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change
+<ps n="" />This line has &gt; &sem; &dem;éasd nèù o style <t f="Times New Roman Regular" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change
 
 
 #---#3__my_text_frame
