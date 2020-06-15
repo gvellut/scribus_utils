@@ -23,7 +23,7 @@
         <HYPHEN/>
         <STYLE NAME="Default Paragraph Style" DefaultStyle="1" ALIGN="0" DIRECTION="0" LINESPMode="0" LINESP="15" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="0" ParagraphEffectOffset="0" DROP="0" DROPLIN="2" Bullet="0" Numeration="0" HyphenConsecutiveLines="2" BCOLOR="None" BSHADE="100"/>
         <STYLE NAME="My Style" ALIGN="0" DIRECTION="0" LINESPMode="0" LINESP="15" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="0" ParagraphEffectOffset="0" DROP="0" DROPLIN="2" Bullet="0" Numeration="0" HyphenConsecutiveLines="2" BCOLOR="None" BSHADE="100" FONT="Apple Chancery Chancery" FONTFEATURES="-clig,-liga"/>
-        <STYLE NAME="Copy of my_text_frame_Standard" PARENT="Copy of my_text_frame_Default Paragraph Style" ALIGN="0" LINESPMode="1" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="0" BCOLOR="None" FONT="Arial Regular" FONTSIZE="12" FEATURES="inherit" FCOLOR="Black" BGCOLOR="None"/>
+        <STYLE NAME="Copy of my_text_frame_Standard" PARENT="Default Paragraph Style" ALIGN="0" LINESPMode="1" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="0" BCOLOR="None" FONT="Arial Regular" FONTSIZE="12" FEATURES="inherit" FCOLOR="Black" BGCOLOR="None"/>
         <STYLE NAME="Copy of my_text_frame_Heading" PARENT="Copy of my_text_frame_Standard" ALIGN="0" LINESPMode="1" INDENT="0" RMARGIN="0" FIRST="0" VOR="11.988" NACH="6.012" BCOLOR="None" FONT="Arial Regular" FONTSIZE="14" FEATURES="inherit" FCOLOR="Black" BGCOLOR="None"/>
         <STYLE NAME="Copy of my_text_frame_Text body" PARENT="Copy of my_text_frame_Standard" ALIGN="0" LINESPMode="1" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="6.9984" BCOLOR="None" FONT="Arial Regular" FONTSIZE="12" FEATURES="inherit" FCOLOR="Black" BGCOLOR="None"/>
         <STYLE NAME="Copy of my_text_frame_List" PARENT="Copy of my_text_frame_Text body" ALIGN="0" LINESPMode="1" INDENT="0" RMARGIN="0" FIRST="0" VOR="0" NACH="6.9984" BCOLOR="None" FONT="Arial Regular" FONTSIZE="12" FEATURES="inherit" FCOLOR="Black" BGCOLOR="None"/>
@@ -62,6 +62,7 @@
         <LAYERS NUMMER="0" LEVEL="0" NAME="Background" SICHTBAR="1" DRUCKEN="1" EDIT="1" SELECT="0" FLOW="1" TRANS="1" BLEND="0" OUTL="0" LAYERC="#000000"/>
         <Printer firstUse="1" toFile="1" useAltPrintCommand="1" outputSeparations="1" useSpotColors="1" useColor="1" mirrorH="0" mirrorV="0" useICC="0" doGCR="1" doClip="1" setDevParam="1" useDocBleeds="1" cropMarks="1" bleedMarks="1" registrationMarks="1" colorMarks="1" includePDFMarks="0" PSLevel="3" PDLanguage="3" markLength="6.92647295047324e-310" markOffset="nan" BleedTop="0" BleedLeft="0" BleedRight="0" BleedBottom="0" printer="" filename="" separationName="" printerCommand=""/>
         <PDF firstUse="1" Thumbnails="0" Articles="0" Bookmarks="0" Compress="1" CMethod="0" Quality="0" EmbedPDF="0" MirrorH="0" MirrorV="0" Clip="0" rangeSel="0" rangeTxt="" RotateDeg="0" PresentMode="0" RecalcPic="0" FontEmbedding="0" Grayscale="0" RGBMode="1" UseProfiles="0" UseProfiles2="0" Binding="0" PicRes="300" Resolution="300" Version="14" Intent="1" Intent2="0" SolidP="sRGB display profile (ICC v2.2)" ImageP="sRGB display profile (ICC v2.2)" PrintP="ISO Coated v2 300% (basICColor)" InfoString="" BTop="0" BLeft="0" BRight="0" BBottom="0" useDocBleeds="1" cropMarks="0" bleedMarks="0" registrationMarks="0" colorMarks="0" docInfoMarks="0" markLength="20" markOffset="0" ImagePr="0" PassOwner="" PassUser="" Permissions="-4" Encrypt="0" UseLayers="0" UseLpi="0" UseSpotColors="1" doMultiFile="0" displayBookmarks="0" displayFullscreen="0" displayLayers="0" displayThumbs="0" hideMenuBar="0" hideToolBar="0" fitWindow="0" openAfterExport="0" PageLayout="0" openAction="">
+            <LPI Color="" Frequency="0" Angle="0" SpotFunction="0"/>
             <LPI Color="Black" Frequency="133" Angle="45" SpotFunction="3"/>
             <LPI Color="Cyan" Frequency="133" Angle="105" SpotFunction="3"/>
             <LPI Color="Magenta" Frequency="133" Angle="75" SpotFunction="3"/>
@@ -101,15 +102,26 @@
         <PAGE PAGEXPOS="695.275590551181" PAGEYPOS="901.889763779528" PAGEWIDTH="595.275590551181" PAGEHEIGHT="841.889763779528" BORDERLEFT="40" BORDERRIGHT="40" BORDERTOP="40" BORDERBOTTOM="40" NUM="2" NAM="" MNAM="Normal Right" Size="A4" Orientation="0" LEFT="0" PRESET="0" VerticalGuides="" HorizontalGuides="" AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0" pageEffectDuration="1" pageViewDuration="1" effectType="0" Dm="0" M="0" Di="0"/>
         <PAGE PAGEXPOS="100" PAGEYPOS="1783.77952755906" PAGEWIDTH="595.275590551181" PAGEHEIGHT="841.889763779528" BORDERLEFT="40" BORDERRIGHT="40" BORDERTOP="40" BORDERBOTTOM="40" NUM="3" NAM="" MNAM="Normal Left" Size="A4" Orientation="0" LEFT="0" PRESET="0" VerticalGuides="" HorizontalGuides="" AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0" pageEffectDuration="1" pageViewDuration="1" effectType="0" Dm="0" M="0" Di="0"/>
         <PAGE PAGEXPOS="695.275590551181" PAGEYPOS="1783.77952755906" PAGEWIDTH="595.275590551181" PAGEHEIGHT="841.889763779528" BORDERLEFT="40" BORDERRIGHT="40" BORDERTOP="40" BORDERBOTTOM="40" NUM="4" NAM="" MNAM="Normal Right" Size="A4" Orientation="0" LEFT="0" PRESET="0" VerticalGuides="" HorizontalGuides="" AGhorizontalAutoGap="0" AGverticalAutoGap="0" AGhorizontalAutoCount="0" AGverticalAutoCount="0" AGhorizontalAutoRefer="0" AGverticalAutoRefer="0" AGSelection="0 0 0 0" pageEffectDuration="1" pageViewDuration="1" effectType="0" Dm="0" M="0" Di="0"/>
-        <PAGEOBJECT XPOS="771" YPOS="181" OwnPage="0" ItemID="397849444" PTYPE="2" WIDTH="413" HEIGHT="413" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="0.13877688172043" LOCALSCY="0.13877688172043" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="0" Pagenumber="0" PFILE="../hikingprintmap/15351860165_fca9a12c4c_o.jpg" IRENDER="0" EMBEDDED="0" path="M0 0 L413 0 L413 413 L0 413 L0 0 Z" copath="M0 0 L413 0 L413 413 L0 413 L0 0 Z" gXpos="771" gYpos="181" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1"/>
-        <PAGEOBJECT XPOS="885" YPOS="650" OwnPage="0" ItemID="371672420" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="771" YPOS="181" OwnPage="0" ItemID="2011050248" PTYPE="2" WIDTH="413" HEIGHT="413" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="0.13877688172043" LOCALSCY="0.13877688172043" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="0" Pagenumber="0" PFILE="../hikingprintmap/15351860165_fca9a12c4c_o.jpg" IRENDER="0" EMBEDDED="0" path="M0 0 L413 0 L413 413 L0 413 L0 0 Z" copath="M0 0 L413 0 L413 413 L0 413 L0 0 Z" gXpos="771" gYpos="181" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1"/>
+        <PAGEOBJECT XPOS="885" YPOS="650" OwnPage="0" ItemID="2123714312" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle/>
                 <ITEXT CH="&lt;text&gt;&lt;paragraph&gt;&lt;ps n=&quot;My Style&quot; /&gt;Hello World.&lt;/paragraph&gt;&lt;paragraph&gt;&lt;/paragraph&gt;&lt;paragraph&gt;Second line with My Style&lt;/paragraph&gt;&lt;paragraph&gt;&lt;ps n=&quot;&quot; /&gt;This line has no style &lt;t f=&quot;Times New Roman&quot; s=&quot;18&quot; c=&quot;Red&quot; &gt;but has&lt;/t&gt; char styles and &lt;cs n=&quot;superscript&quot;&gt;font&lt;/cs&gt; change&lt;/paragraph&gt;&lt;/text&gt;"/>
                 <trail/>
             </StoryText>
         </PAGEOBJECT>
-        <PAGEOBJECT XPOS="820" YPOS="84" OwnPage="0" ItemID="402362212" PTYPE="4" WIDTH="95" HEIGHT="59" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L95 0 L95 59 L0 59 L0 0 Z" copath="M0 0 L95 0 L95 59 L0 59 L0 0 Z" gXpos="820" gYpos="84" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="820" YPOS="84" OwnPage="0" ItemID="2116999432" PTYPE="4" WIDTH="95" HEIGHT="59" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L95 0 L95 59 L0 59 L0 0 Z" copath="M0 0 L95 0 L95 59 L0 59 L0 0 Z" gXpos="820" gYpos="84" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+            <StoryText>
+                <DefaultStyle/>
+                <ITEXT CH="First Line Text"/>
+                <para PARENT="Copy of my_text_frame_Standard"/>
+                <ITEXT CH="Second Line Text"/>
+                <para PARENT="Default Paragraph Style"/>
+                <ITEXT CH="Third Line Text"/>
+                <para PARENT="My Style"/>
+            </StoryText>
+        </PAGEOBJECT>
+        <PAGEOBJECT XPOS="1013" YPOS="80" OwnPage="0" ItemID="2124450056" PTYPE="4" WIDTH="93" HEIGHT="58" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L93 0 L93 58 L0 58 L0 0 Z" copath="M0 0 L93 0 L93 58 L0 58 L0 0 Z" gXpos="1013" gYpos="80" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle/>
                 <ITEXT CH="First Line Text"/>
@@ -120,32 +132,28 @@
                 <para PARENT="My Style"/>
             </StoryText>
         </PAGEOBJECT>
-        <PAGEOBJECT XPOS="1013" YPOS="80" OwnPage="0" ItemID="471621988" PTYPE="4" WIDTH="93" HEIGHT="58" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L93 0 L93 58 L0 58 L0 0 Z" copath="M0 0 L93 0 L93 58 L0 58 L0 0 Z" gXpos="1013" gYpos="80" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
-            <StoryText>
-                <DefaultStyle/>
-                <ITEXT CH="First Line Text"/>
-                <para PARENT="My Style"/>
-                <ITEXT CH="Second Line Text"/>
-                <para PARENT="Default Paragraph Style"/>
-                <ITEXT CH="Third Line Text"/>
-                <para PARENT="My Style"/>
-            </StoryText>
-        </PAGEOBJECT>
-        <PAGEOBJECT XPOS="289.724409448819" YPOS="1531.88976377953" OwnPage="1" ItemID="477571428" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="my_text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="289.724409448819" YPOS="1531.88976377953" OwnPage="1" ItemID="2011657992" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="my_text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle/>
                 <ITEXT CH="A"/>
                 <para PARENT="My Style"/>
                 <para PARENT="My Style"/>
-                <ITEXT CH="Second line with My Style"/>
+                <ITEXT CH="Second line "/>
+                <ITEXT FONT="Times New Roman Regular" FONTSIZE="18" FCOLOR="Red" CH="with"/>
+                <ITEXT CH=" My Style"/>
                 <para PARENT="My Style"/>
-                <ITEXT CH="This line has &gt;   —éasd nèù o style "/>
-                <ITEXT FONT="Times New Roman Regular" FONTSIZE="18" FCOLOR="Red" CH="but has char styles and "/>
-                <ITEXT CPARENT="superscript" CH="font change"/>
-                <para PARENT="Default Paragraph Style"/>
+                <ITEXT CH="This line has &gt;   —éasd "/>
+                <ITEXT CPARENT="superscript" CH="nèù"/>
+                <ITEXT CH=" o style "/>
+                <ITEXT FONT="Times New Roman Regular" FONTSIZE="18" FCOLOR="Red" CH="but has"/>
+                <ITEXT CH=" char styles "/>
+                <ITEXT FONT="Helvetica Neue Bold" FONTSIZE="24" FCOLOR="Green" CH="and"/>
+                <ITEXT CH="  adasad "/>
+                <ITEXT CPARENT="superscript" CH="nèù"/>
+                <para PARENT="My Style"/>
             </StoryText>
         </PAGEOBJECT>
-        <PAGEOBJECT XPOS="289.724409448819" YPOS="2413.77952755906" OwnPage="3" ItemID="512481124" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame (2)" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="289.724409448819" YPOS="2413.77952755906" OwnPage="3" ItemID="2124444424" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame (2)" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle/>
                 <ITEXT FEATURES="inherit" CH="a"/>
@@ -166,7 +174,7 @@
                 <para PARENT="My Style"/>
             </StoryText>
         </PAGEOBJECT>
-        <PAGEOBJECT XPOS="885" YPOS="2413.77952755906" OwnPage="4" ItemID="473353060" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame (3)" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="885" YPOS="2413.77952755906" OwnPage="4" ItemID="2122758920" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame (3)" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="0" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle/>
                 <ITEXT FEATURES="inherit" CH="a"/>
@@ -187,7 +195,7 @@
                 <para PARENT="My Style"/>
             </StoryText>
         </PAGEOBJECT>
-        <PAGEOBJECT XPOS="885" YPOS="1531.88976377953" OwnPage="2" ItemID="513118052" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" PSTYLE="Default Paragraph Style" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
+        <PAGEOBJECT XPOS="885" YPOS="1531.88976377953" OwnPage="2" ItemID="2011636488" PTYPE="4" WIDTH="290" HEIGHT="126" FRTYPE="0" CLIPEDIT="0" PWIDTH="1" PLINEART="1" ANNAME="Copy of my_text_frame" LOCALSCX="1" LOCALSCY="1" LOCALX="0" LOCALY="0" LOCALROT="0" PICART="1" SCALETYPE="1" RATIO="1" COLUMNS="1" COLGAP="0" AUTOTEXT="0" EXTRA="0" TEXTRA="0" BEXTRA="0" REXTRA="0" VAlign="0" FLOP="1" PLTSHOW="0" BASEOF="0" textPathType="0" textPathFlipped="0" path="M0 0 L290 0 L290 126 L0 126 L0 0 Z" copath="M0 0 L290 0 L290 126 L0 126 L0 0 Z" gXpos="885" gYpos="650" gWidth="0" gHeight="0" PSTYLE="Default Paragraph Style" LAYER="0" NEXTITEM="-1" BACKITEM="-1">
             <StoryText>
                 <DefaultStyle PARENT="Default Paragraph Style" LINESPMode="1" LINESP="12"/>
                 <ITEXT CH="Asdad"/>

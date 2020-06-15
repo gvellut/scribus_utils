@@ -41,6 +41,7 @@ ENTITIES = {
     "sen": u"\u2002",  # en space
     "sem": u"\u2003",  # em space
     "stn": u"\u2009",  # thin
+    "stu": u"\u202F",  # unbreakable thin
     "stk": u"\u2004",  # thick 1/3
     "smi": u"\u2005",  # mid 1/4
     "sha": u"\u200A",  # hair
@@ -52,7 +53,10 @@ XML_ENTITIES = set(["lt", "gt", "amp", "quot"])
 
 # __file__ is not defined when running from Scribus but the dir of
 # the script being executed is in sys.path 0
-data_file = os.path.join(sys.path[0], "test_data.txt")
+data_file = os.path.join(
+    "/Users/guilhem/Documents/projects/github/hikingprintmap/___jp/data_text.txt"
+    # sys.path[0], "test_data.txt"
+)
 
 
 def prep():
@@ -117,6 +121,7 @@ def add_text(key, text, pstyles, cstyles):
             sc.insertText(p.text, -1, key)
             cursor_pos += len(p.text)
 
+        cchanges = []
         for s in p:
             if s.tag == "t":
                 if not s.text:
@@ -127,27 +132,29 @@ def add_text(key, text, pstyles, cstyles):
                     cursor_pos += len(t)
 
                     rt_l = cursor_pos - len(t)
-                    sc.selectText(rt_l, -1, key)
+                    char_range = (rt_l, len(t))
                     if "f" in s.attrib:
                         font_name = s.attrib["f"]
                         try:
-                            sc.setFont(s.attrib["f"], key)
+                            cchanges.append(
+                                (char_range, sc.setFont, s.attrib["f"], key)
+                            )
                         except Exception:
                             errors.append(u"Invalid font name: %s" % font_name)
                     if "c" in s.attrib:
                         # not currently defined color name will be added with
                         # a brown color
                         # TODO but no way to tell ?
-                        c = s.attrib["c"]
-                        sc.setTextColor(c, key)
+                        color = s.attrib["c"]
+                        cchanges.append((char_range, sc.setTextColor, color, key))
                     if "s" in s.attrib:
                         font_size = s.attrib["s"]
                         try:
-                            sc.setFontSize(int(font_size), key)
+                            cchanges.append(
+                                (char_range, sc.setFontSize, int(font_size), key)
+                            )
                         except Exception:
                             errors.append(u"Invalid font size: %s" % font_size)
-                    sc.selectText(0, 0, key)  # deselect
-
             elif s.tag == "cs":
                 if not s.text:
                     errors.append(u"cs tags should have text")
@@ -157,14 +164,15 @@ def add_text(key, text, pstyles, cstyles):
                     cursor_pos += len(t)
 
                     rt_l = cursor_pos - len(t)
-                    sc.selectText(rt_l, -1, key)
+                    char_range = (rt_l, len(t))
                     if "n" in s.attrib:
                         # TODO check if in current styles ?
                         char_style = s.attrib["n"]
-                        sc.setCharacterStyle(char_style, key)
+                        cchanges.append(
+                            (char_range, sc.setCharacterStyle, char_style, key)
+                        )
                     else:
                         errors.append(u"cs tags should have a 'n' attribute")
-                    sc.selectText(0, 0, key)  # deselect
 
             elif s.tag == "ps":
                 # change the state of the current style for this paragraph
@@ -190,6 +198,12 @@ def add_text(key, text, pstyles, cstyles):
         sc.selectText(cursor_pos - 1, -1, key)
         sc.setStyle(current_style, key)
         sc.selectText(0, 0, key)  # deselect
+
+        for cchange in cchanges:
+            char_range, change = cchange[0], cchange[1:]
+            sc.selectText(char_range[0], char_range[1], key)
+            change[0](*change[1:])
+            sc.selectText(0, 0, key)
 
     if errors:
         _error(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))

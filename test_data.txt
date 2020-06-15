@@ -3,8 +3,8 @@
 
 <ps n="My Style" />A
 
-Second line with My Style
-<ps n="" />This line has &gt; &sem; &dem;éasd nèù o style <t f="Times New Roman Regular" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change
+Second line <t f="Times New Roman Regular" s="18" c="Red" >with</t> My Style
+<ps n="My Style" />This line has &gt; &sem; &dem;éasd <cs n="superscript">nèù</cs> o style <t f="Times New Roman Regular" s="18" c="Red" >but has</t> char styles <t f="Helvetica Neue Bold" s="24" c="Green" >and</t>  adasad <cs n="superscript">nèù</cs>
 
 
 #---#3__my_text_frame
