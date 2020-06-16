@@ -45,17 +45,26 @@ ENTITIES = {
     "stk": u"\u2004",  # thick 1/3
     "smi": u"\u2005",  # mid 1/4
     "sha": u"\u200A",  # hair
+    "znb": u"\uFEFF",  # zero width no break
+    "shy": u"\u00AD",  # soft hyphen
     "dem": u"\u2014",  # em dash
     "den": u"\u2013",  # en dash
     "hsf": u"\u00AD",  # soft hyphen
 }
 XML_ENTITIES = set(["lt", "gt", "amp", "quot"])
 
+ZNB_INSERT = u"A%s" % ENTITIES["znb"]
+
+KEY_SEP_SUFFIX = "---sep"
+LINE_SEP = "###"
+
 # __file__ is not defined when running from Scribus but the dir of
 # the script being executed is in sys.path 0
-data_file = os.path.join(
+# data_file = os.path.join(sys.path[0], "test_data.txt")
+# data_file = sc.fileDialog("Data file", issave=True)
+# **** CHANGE ****
+data_file = (
     "/Users/guilhem/Documents/projects/github/hikingprintmap/___jp/data_text.txt"
-    # sys.path[0], "test_data.txt"
 )
 
 
@@ -69,17 +78,20 @@ def read_data(data_file):
     with codecs.open(data_file, encoding="utf-8") as f:
         data = f.read()
 
-    def wrapup(content):
+    def wrapup(content, is_sep):
         # remove empty lines at the beginning and end
         content_clean = []
         for i, c in enumerate(content):
-            if len(c) != 0:
+            if len(c.strip()) != 0:
                 content_clean = content[i:]
                 break
         for i, c in enumerate(reversed(content_clean)):
-            if len(c) != 0:
+            if len(c.strip()) != 0:
                 content_clean = content_clean[: len(content_clean) - i]
                 break
+        if is_sep:
+            content_clean = "".join(content_clean)
+            content_clean = content_clean.split(LINE_SEP)
         return (
             u"<text><paragraph>%s</paragraph></text>"
             % u"</paragraph><paragraph>".join(content_clean)
@@ -89,20 +101,25 @@ def read_data(data_file):
     texts = {}
     key = None
     content = None
+    is_sep = False
     for line in lines:
         if line.startswith(KEY_PREFIX):
             if key:
-                texts[key] = wrapup(content)
+                texts[key] = wrapup(content, is_sep)
             key = line[len(KEY_PREFIX) :].strip()
+            if key.endswith(KEY_SEP_SUFFIX):
+                is_sep = True
+                key = key[: -len(KEY_SEP_SUFFIX)]
+            else:
+                is_sep = False
             content = []
         else:
-            line = line.strip()
             if not key:
                 print u"No key defined for %s" % line
                 continue
             content.append(line)
     if key:
-        texts[key] = wrapup(content)
+        texts[key] = wrapup(content, is_sep)
     return texts
 
 
@@ -155,6 +172,9 @@ def add_text(key, text, pstyles, cstyles):
                             )
                         except Exception:
                             errors.append(u"Invalid font size: %s" % font_size)
+                    if "z" in s.attrib:
+                        # to indicate not to justify between Japanese letters
+                        cchanges.append((char_range, "znb"))
             elif s.tag == "cs":
                 if not s.text:
                     errors.append(u"cs tags should have text")
@@ -199,11 +219,25 @@ def add_text(key, text, pstyles, cstyles):
         sc.setStyle(current_style, key)
         sc.selectText(0, 0, key)  # deselect
 
-        for cchange in cchanges:
+        for cchange in filter(lambda x: x[1] != "znb", cchanges):
             char_range, change = cchange[0], cchange[1:]
             sc.selectText(char_range[0], char_range[1], key)
             change[0](*change[1:])
             sc.selectText(0, 0, key)
+
+        dpos = 0
+        for cchange in filter(lambda x: x[1] == "znb", cchanges):
+            char_range = cchange[0]
+            for ic in range(char_range[0], char_range[0] + char_range[1] - 1):
+                # TODO bug in Scribus ?
+                # Cannot insert the znb by itself
+                # so insert with a letter ZNB_INSERT then erase the letter
+                sc.insertText(ZNB_INSERT, ic + dpos + 1, key)
+                sc.selectText(ic + dpos + 1, 1, key)
+                sc.deleteText(key)
+                sc.selectText(0, 0, key)
+                dpos += 1
+        cursor_pos += dpos
 
     if errors:
         _error(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
@@ -225,9 +259,13 @@ def _process_entities(text):
     return re.sub(entity_rex, repl, text)
 
 
-def _debug(o):
+def _debug(o, icon=sc.ICON_INFORMATION):
     if DEBUG:
-        sc.messageBox("DEBUG", repr(o))
+        result = sc.messageBox(
+            "DEBUG", repr(o), icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT
+        )
+        if result == sc.BUTTON_ABORT:
+            sys.exit(1)
 
 
 def _error(o, icon=sc.ICON_WARNING):
@@ -236,10 +274,6 @@ def _error(o, icon=sc.ICON_WARNING):
     )
     if result == sc.BUTTON_ABORT:
         sys.exit(1)
-
-
-def _index_items_by_page():
-    pass
 
 
 def main(argv):
@@ -253,9 +287,6 @@ def main(argv):
 
     sc.setRedraw(False)
 
-    # TODO index items for pages
-    _index_items_by_page()
-
     num_selected = sc.selectionCount()
     if num_selected:
         for i in range(num_selected):
@@ -263,7 +294,6 @@ def main(argv):
             if sc.getObjectType(key) != "TextFrame":
                 _error(u"Selected object with name %s not a text frame" % key)
                 continue
-            # TODO process pages later
             if key not in texts:
                 _error(u"Selected text frame with name %s not in data" % key)
                 continue
@@ -277,9 +307,6 @@ def main(argv):
             for key, text in texts.items():
                 progress += 1
                 sc.progressSet(progress)
-                # TODO process pages later
-                if key.startswith("#"):
-                    continue
 
                 # TODO keep around ? and display at the end ?
                 if not sc.objectExists(key):
