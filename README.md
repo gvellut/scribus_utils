@@ -6,6 +6,10 @@ Utility scripts for Scribus 1.5.5 (in Python 2; When 1.5.6 is released they will
 
 This script scales the image so that it fills the frame completely (slightly modified from code by Jeremy Brown)
 
+### Image_AlignInFrame
+
+Align an image in its frame, keepin its current zoom level (taken from the Scribus wiki, slioghtly modified)
+
 ### Image_Cleanup
 
 Cleans a folder tree of images not used inside the SLA by moving them to a __Trash folder (not started)
