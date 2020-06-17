@@ -28,7 +28,6 @@ ENTITIES = {
     "shy": u"\u00AD",  # soft hyphen
     "dem": u"\u2014",  # em dash
     "den": u"\u2013",  # en dash
-    "hsf": u"\u00AD",  # soft hyphen
 }
 XML_ENTITIES = set(["lt", "gt", "amp", "quot"])
 
@@ -133,7 +132,7 @@ def add_text(key, text, pstyles, cstyles):
                         start_text_pos = 0
                         for i, c in enumerate(t):
                             # soft hyphen
-                            if c == ENTITIES["hsf"]:
+                            if c == ENTITIES["shy"]:
                                 if i != start_text_pos:
                                     ls = start_text_pos
                                     rs = ls + i - start_text_pos
@@ -257,13 +256,23 @@ def main(argv):
 
     num_selected = sc.selectionCount()
     if num_selected:
+        # first, copy the list of selected objects (later processing will
+        # change that list => issues if used directly)
+        keyList = []
         for i in range(num_selected):
-            key = sc.getSelectedObject(i)
+            keyList.append(sc.getSelectedObject(i))
+
+        sc.progressTotal(len(keyList))
+
+        for i in range(num_selected):
+            sc.progressSet(i + 1)
+
+            key = keyList[i]
             if sc.getObjectType(key) != "TextFrame":
-                scerror(u"Selected object with name %s not a text frame" % key)
+                scerror(u"Selected object with name '%s' not a text frame" % key)
                 continue
             if key not in texts:
-                scerror(u"Selected text frame with name %s not in data" % key)
+                scerror(u"Selected text frame with name '%s' not in data" % key)
                 continue
 
             add_text(key, texts[key], pstyles, cstyles)

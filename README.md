@@ -8,7 +8,7 @@ This script scales the image so that it fills the frame completely (slightly mod
 
 ### Image_AlignInFrame
 
-Align an image in its frame, keepin its current zoom level (taken from the Scribus wiki, slioghtly modified)
+Align an image in its frame, keepin its current zoom level (taken from the Scribus wiki, slightly modified)
 
 ### Image_Cleanup
 

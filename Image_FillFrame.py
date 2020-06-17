@@ -34,4 +34,4 @@ for i in range(nbrSelected):
         sc.docChanged(1)
         sc.setRedraw(True)
     except Exception:
-        nothing = "nothing"
+        pass

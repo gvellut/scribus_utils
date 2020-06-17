@@ -24,7 +24,7 @@ import sys
 from common import sc, scdebug, scerror
 
 
-def get_image_x(letter, default=0.0):
+def get_image_x(position, default=0.0):
     imageX = default
     if position == "L":
         imageX = 0.0
@@ -35,7 +35,7 @@ def get_image_x(letter, default=0.0):
     return imageX
 
 
-def get_image_y(letter, default=0.0):
+def get_image_y(position, default=0.0):
     imageY = default
     if position == "T":
         imageY = 0.0
@@ -67,34 +67,34 @@ position = position.upper()
 objList = []
 for i in range(nbrSelected):
     objList.append(sc.getSelectedObject(i))
-    for i in range(nbrSelected):
-        try:
-            obj = objList[i]
-            imageX, imageY = sc.getImageOffset(obj)
-            frameW, frameH = sc.getSize(obj)
-            saveScaleX, saveScaleY = sc.getImageScale(obj)
-            sc.setScaleImageToFrame(1, 0, obj)
-            fullScaleX, fullScaleY = sc.getImageScale(obj)
-            sc.setScaleImageToFrame(0, 0, obj)
-            sc.setImageScale(saveScaleX, saveScaleY, obj)
-            imageW = frameW * (saveScaleX / fullScaleX)
-            imageH = frameH * (saveScaleY / fullScaleY)
 
-            if len(position) == 1:
-                position = position[0]
-                imageX = get_image_x(position, default=imageX)
-                imageY = get_image_y(position, default=imageY)
-            else:
-                imageX = get_image_x(position[1], default=imageX)
-                imageY = get_image_y(position[0], default=imageY)
+for i in range(nbrSelected):
+    obj = objList[i]
+    if sc.getObjectType(obj) != "ImageFrame":
+        # TODO warning dialog ?
+        continue
+    imageX, imageY = sc.getImageOffset(obj)
+    frameW, frameH = sc.getSize(obj)
+    saveScaleX, saveScaleY = sc.getImageScale(obj)
+    sc.setScaleImageToFrame(1, 0, obj)
+    fullScaleX, fullScaleY = sc.getImageScale(obj)
+    sc.setScaleImageToFrame(0, 0, obj)
+    sc.setImageScale(saveScaleX, saveScaleY, obj)
+    imageW = frameW * (saveScaleX / fullScaleX)
+    imageH = frameH * (saveScaleY / fullScaleY)
 
-            sc.setImageOffset(imageX, imageY, obj)
-            sc.docChanged(1)
-            sc.setRedraw(True)
-        except Exception:
-            pass
+    if len(position) == 1:
+        position = position[0]
+        imageX = get_image_x(position, default=imageX)
+        imageY = get_image_y(position, default=imageY)
+    else:
+        imageX = get_image_x(position[1], default=imageX)
+        imageY = get_image_y(position[0], default=imageY)
+
+    sc.setImageOffset(imageX, imageY, obj)
+    sc.docChanged(1)
+    sc.setRedraw(True)
 sc.setUnit(restore_units)
-
 
 if sc.haveDoc():
     sc.redrawAll()
