@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 Taken from https://wiki.sc.net/canvas/Align_an_Image_in_its_Frame
 No TkInter
@@ -20,69 +21,80 @@ There is minimal error checking, in particular no checking for frame type.
 
 import sys
 
-import scribus as sc
+from common import sc, scdebug, scerror
 
-if sc.haveDoc():
-    restore_units = sc.getUnit()
-    # since there is an issue with units other than points,
-    # we switch to points then restore later.
-    sc.setUnit(0)
-    nbrSelected = sc.selectionCount()
-    if nbrSelected == 0:
-        sc.messageBox("Error:", "No frame selected")
-        sys.exit(1)
-    position = sc.valueDialog(
-        "Image Position",
-        "     T = Top,     M = Middle,     B = Bottom     \n     L = Left,     C = Center,     R = Right     \n     Example: BL = Bottom Left",
-        "C",
-    )
-    position = position.upper()
-    objList = []
-    for i in range(nbrSelected):
-        objList.append(sc.getSelectedObject(i))
-        for i in range(nbrSelected):
-            try:
-                obj = objList[i]
-                frameW, frameH = sc.getSize(obj)
-                saveScaleX, saveScaleY = sc.getImageScale(obj)
-                sc.setScaleImageToFrame(1, 0, obj)
-                fullScaleX, fullScaleY = sc.getImageScale(obj)
-                sc.setScaleImageToFrame(0, 0, obj)
-                sc.setImageScale(saveScaleX, saveScaleY, obj)
-                imageW = frameW * (saveScaleX / fullScaleX)
-                imageH = frameH * (saveScaleY / fullScaleY)
-                imageX = 0.0
-                imageY = 0.0
 
-                if len(position) == 1:
-                    if position in ("L", "C", "R"):
-                        position = "M" + position
-                    elif position in ("T", "B"):
-                        position += "C"
+def get_image_x(letter, default=0.0):
+    imageX = default
+    if position == "L":
+        imageX = 0.0
+    elif position == "C":
+        imageX = (frameW - imageW) / 2.0
+    elif position == "R":
+        imageX = frameW - imageW
+    return imageX
 
-                if position[0] == "T":
-                    imageY = 0.0
-                elif position[0] == "M":
-                    imageY = (frameH - imageH) / 2.0
-                elif position[0] == "B":
-                    imageY = frameH - imageH
 
-                if position[1] == "L":
-                    imageX = 0.0
-                elif position[1] == "C":
-                    imageX = (frameW - imageW) / 2.0
-                elif position[1] == "R":
-                    imageX = frameW - imageW
+def get_image_y(letter, default=0.0):
+    imageY = default
+    if position == "T":
+        imageY = 0.0
+    elif position == "M":
+        imageY = (frameH - imageH) / 2.0
+    elif position == "B":
+        imageY = frameH - imageH
+    return imageY
 
-                sc.setImageOffset(imageX, imageY, obj)
-                sc.docChanged(1)
-                sc.setRedraw(True)
-            except Exception:
-                nothing = "nothing"
-    sc.setUnit(restore_units)
-else:
-    sc.messageBox("Error", "No document open")
+
+if not sc.haveDoc():
+    scerror("No document open!")
     sys.exit(1)
+
+restore_units = sc.getUnit()
+# since there is an issue with units other than points,
+# we switch to points then restore later.
+sc.setUnit(0)
+nbrSelected = sc.selectionCount()
+if nbrSelected == 0:
+    sc.messageBox("Error:", "No frame selected")
+    sys.exit(1)
+position = sc.valueDialog(
+    "Image Position",
+    "     T = Top,     M = Middle,     B = Bottom     \n     L = Left,     C = Center,     R = Right     \n     Example: BL = Bottom Left",
+    "C",
+)
+position = position.upper()
+objList = []
+for i in range(nbrSelected):
+    objList.append(sc.getSelectedObject(i))
+    for i in range(nbrSelected):
+        try:
+            obj = objList[i]
+            imageX, imageY = sc.getImageOffset(obj)
+            frameW, frameH = sc.getSize(obj)
+            saveScaleX, saveScaleY = sc.getImageScale(obj)
+            sc.setScaleImageToFrame(1, 0, obj)
+            fullScaleX, fullScaleY = sc.getImageScale(obj)
+            sc.setScaleImageToFrame(0, 0, obj)
+            sc.setImageScale(saveScaleX, saveScaleY, obj)
+            imageW = frameW * (saveScaleX / fullScaleX)
+            imageH = frameH * (saveScaleY / fullScaleY)
+
+            if len(position) == 1:
+                position = position[0]
+                imageX = get_image_x(position, default=imageX)
+                imageY = get_image_y(position, default=imageY)
+            else:
+                imageX = get_image_x(position[1], default=imageX)
+                imageY = get_image_y(position[0], default=imageY)
+
+            sc.setImageOffset(imageX, imageY, obj)
+            sc.docChanged(1)
+            sc.setRedraw(True)
+        except Exception:
+            pass
+sc.setUnit(restore_units)
+
 
 if sc.haveDoc():
     sc.redrawAll()

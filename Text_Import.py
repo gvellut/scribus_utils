@@ -6,33 +6,12 @@ import re
 import sys
 import xml.etree.ElementTree as ET
 
-try:
-    import scribus as sc
-except Exception:
-
-    class ScribusProxy(object):
-        def __getattr__(self, name):
-            if name == "messageBox":
-
-                def _messageBox(*args, **kwargs):
-                    print "MessageBox %s" % args[1]
-
-                return _messageBox
-
-            def _missing(*args, **kwargs):
-                print "%s * %r ** %r" % (name, args, kwargs)
-
-            return _missing
-
-    sc = ScribusProxy()
-
+from common import sc, scdebug, scerror
 
 # TODO tester linked frames
 
 KEY_PREFIX = "#---"
-COPY_PREFIX = "Copy of "
 NO_STYLE = "Default Paragraph Style"
-DEBUG = True
 
 # spaces : snb sen sem stn stk  smi sha
 # dashes : dem den
@@ -52,8 +31,6 @@ ENTITIES = {
     "hsf": u"\u00AD",  # soft hyphen
 }
 XML_ENTITIES = set(["lt", "gt", "amp", "quot"])
-
-ZNB_INSERT = u"A%s" % ENTITIES["znb"]
 
 KEY_SEP_SUFFIX = "---sep"
 LINE_SEP = "###"
@@ -248,7 +225,7 @@ def add_text(key, text, pstyles, cstyles):
             sc.selectText(0, 0, key)
 
     if errors:
-        _error(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
+        scerror(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
 
 
 entity_rex = re.compile(r"(&(\w+?);)", flags=re.IGNORECASE)
@@ -267,31 +244,14 @@ def _process_entities(text):
     return re.sub(entity_rex, repl, text)
 
 
-def _debug(o, icon=sc.ICON_INFORMATION):
-    if DEBUG:
-        result = sc.messageBox(
-            "DEBUG", repr(o), icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT
-        )
-        if result == sc.BUTTON_ABORT:
-            sys.exit(1)
-
-
-def _error(o, icon=sc.ICON_WARNING):
-    result = sc.messageBox(
-        "ERROR", o, icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT,
-    )
-    if result == sc.BUTTON_ABORT:
-        sys.exit(1)
-
-
 def main(argv):
     if not sc.haveDoc():
-        _error(u"Need a document", sc.ICON_CRITICAL)
+        scerror(u"Need a document", sc.ICON_CRITICAL)
         sys.exit(1)
 
     pstyles, cstyles = prep()
     texts = read_data(data_file)
-    # _debug(texts)
+    # scdebug(texts)
 
     sc.setRedraw(False)
 
@@ -300,10 +260,10 @@ def main(argv):
         for i in range(num_selected):
             key = sc.getSelectedObject(i)
             if sc.getObjectType(key) != "TextFrame":
-                _error(u"Selected object with name %s not a text frame" % key)
+                scerror(u"Selected object with name %s not a text frame" % key)
                 continue
             if key not in texts:
-                _error(u"Selected text frame with name %s not in data" % key)
+                scerror(u"Selected text frame with name %s not in data" % key)
                 continue
 
             add_text(key, texts[key], pstyles, cstyles)
@@ -318,10 +278,10 @@ def main(argv):
 
                 # TODO keep around ? and display at the end ?
                 if not sc.objectExists(key):
-                    _error(u"Object %s from data not found" % key)
+                    scerror(u"Object %s from data not found" % key)
                     continue
                 if sc.getObjectType(key) != "TextFrame":
-                    _error(u"Object %s from data not a text frame" % key)
+                    scerror(u"Object %s from data not a text frame" % key)
                     continue
 
                 add_text(key, texts[key], pstyles, cstyles)
