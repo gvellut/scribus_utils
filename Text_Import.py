@@ -145,11 +145,36 @@ def add_text(key, text, pstyles, cstyles):
                     errors.append(u"t tags should have text")
                 else:
                     t = s.text
+
+                    # do it first since can change text content and length
+                    if "z" in s.attrib:
+                        modified_text = []
+                        # If soft hyphen => prevent insertion of znb so the Japanese
+                        # text gets cut in new lines ; remove them (because would cause
+                        # soft hyphen dash to be inserted) and insert znb between other
+                        # letters
+                        start_text_pos = 0
+                        for i, c in enumerate(t):
+                            # soft hyphen
+                            if c == ENTITIES["hsf"]:
+                                if i != start_text_pos:
+                                    ls = start_text_pos
+                                    rs = ls + i - start_text_pos
+                                    modified_text.extend(ENTITIES["znb"].join(t[ls:rs]))
+                                # exclude soft hyphen
+                                start_text_pos = i + 1
+
+                        if start_text_pos != len(t):
+                            ls = start_text_pos
+                            rs = ls + len(t) - start_text_pos
+                            modified_text.extend(ENTITIES["znb"].join(t[ls:rs]))
+
+                        t = "".join(modified_text)
+
                     sc.insertText(t, -1, key)
+                    char_range = (cursor_pos, len(t))
                     cursor_pos += len(t)
 
-                    rt_l = cursor_pos - len(t)
-                    char_range = (rt_l, len(t))
                     if "f" in s.attrib:
                         font_name = s.attrib["f"]
                         try:
@@ -172,9 +197,6 @@ def add_text(key, text, pstyles, cstyles):
                             )
                         except Exception:
                             errors.append(u"Invalid font size: %s" % font_size)
-                    if "z" in s.attrib:
-                        # to indicate not to justify between Japanese letters
-                        cchanges.append((char_range, "znb"))
             elif s.tag == "cs":
                 if not s.text:
                     errors.append(u"cs tags should have text")
@@ -219,25 +241,11 @@ def add_text(key, text, pstyles, cstyles):
         sc.setStyle(current_style, key)
         sc.selectText(0, 0, key)  # deselect
 
-        for cchange in filter(lambda x: x[1] != "znb", cchanges):
+        for cchange in cchanges:
             char_range, change = cchange[0], cchange[1:]
             sc.selectText(char_range[0], char_range[1], key)
             change[0](*change[1:])
             sc.selectText(0, 0, key)
-
-        dpos = 0
-        for cchange in filter(lambda x: x[1] == "znb", cchanges):
-            char_range = cchange[0]
-            for ic in range(char_range[0], char_range[0] + char_range[1] - 1):
-                # TODO bug in Scribus ?
-                # Cannot insert the znb by itself
-                # so insert with a letter ZNB_INSERT then erase the letter
-                sc.insertText(ZNB_INSERT, ic + dpos + 1, key)
-                sc.selectText(ic + dpos + 1, 1, key)
-                sc.deleteText(key)
-                sc.selectText(0, 0, key)
-                dpos += 1
-        cursor_pos += dpos
 
     if errors:
         _error(u"Errors while processing '%s':\n- %s" % (key, "\n- ".join(errors)))
