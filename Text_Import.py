@@ -69,8 +69,8 @@ def read_data(data_file):
             content_clean = "".join(content_clean)
             content_clean = content_clean.split(LINE_SEP)
         return (
-            u"<text><paragraph>%s</paragraph></text>"
-            % u"</paragraph><paragraph>".join(content_clean)
+            u"<text>\n<paragraph>%s</paragraph>\n</text>"
+            % u"</paragraph>\n<paragraph>".join(content_clean)
         )
 
     lines = data.splitlines()
@@ -106,7 +106,29 @@ def add_text(key, text, pstyles, cstyles):
     errors = []
 
     text_ent = _process_entities(text)
-    root = ET.fromstring(text_ent.encode("utf-8"))
+    try:
+        root = ET.fromstring(text_ent.encode("utf-8"))
+    except ET.ParseError as ex:
+        iline, icolumn = ex.position
+        # 1-based
+        iline -= 1
+        icolumn -= 1
+        lines = text_ent.splitlines()
+        line = lines[iline]
+        sl = len("<paragraph>")
+        el = len("</paragraph>")
+        imin = max(sl, icolumn - 20)
+        imax = min(len(line) - el, icolumn + 21)
+        # TODO remove tags added by read_data not in original text
+        # like tags <paragraph>
+        subtext = "%s__(%s)__%s" % (
+            line[imin:icolumn],
+            line[icolumn],
+            line[icolumn + 1 : imax],
+        )
+        scerror(u"Error around '%s'" % subtext)
+        sys.exit(1)
+
     cursor_pos = 0
     current_style = NO_STYLE
     for p in root:
