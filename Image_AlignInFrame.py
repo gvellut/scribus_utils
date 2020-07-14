@@ -63,6 +63,10 @@ position = sc.valueDialog(
     "     T = Top,     M = Middle,     B = Bottom     \n     L = Left,     C = Center,     R = Right     \n     Example: BL = Bottom Left",
     "C",
 )
+
+if not position:
+    sys.exit(0)
+
 position = position.upper()
 objList = []
 for i in range(nbrSelected):

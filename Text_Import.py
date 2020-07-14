@@ -115,11 +115,10 @@ def add_text(key, text, pstyles, cstyles):
         icolumn -= 1
         lines = text_ent.splitlines()
         line = lines[iline]
-        sl = len("<paragraph>")
-        el = len("</paragraph>")
-        imin = max(sl, icolumn - 20)
-        imax = min(len(line) - el, icolumn + 21)
-        # TODO remove tags added by read_data not in original text
+        imin = max(0, icolumn - 60)
+        imax = min(len(line), icolumn + 61)
+        # TODO remove tags added by read_data not in original text ?
+        # cn be confusing if tag missing not found at the end
         # like tags <paragraph>
         subtext = "%s__(%s)__%s" % (
             line[imin:icolumn],
