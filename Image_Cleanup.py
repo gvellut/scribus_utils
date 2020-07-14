@@ -5,30 +5,40 @@ from HTMLParser import HTMLParser
 import os
 import shutil
 import sys
+from types import ModuleType
 
-from common import sc
+from common import sc, scdebug, scdialog, scerror
 
-root_dir = ""  # sys.argv[1]
-if not root_dir:
-    try:
-        # must run inside Scribus
-        # root_dir is the path of current document
-        root_dir = os.path.dirname(sc.getDocName())
-    except Exception:
-        print (
-            "Root Dir is None and script is not running in Scribus or with no open "
-            "doc. Edit the script and change it"
-        )
+ROOT_DIR = ""  # sys.argv[1]
+
+if not isinstance(sc, ModuleType):
+    # ScribusProxy is not a module => not in Scribus
+    sc = None
+    if not ROOT_DIR:
+        print "No root dir defined in script. Edit the script and change it."
         sys.exit(1)
 else:
-    # don't care about current document
-    sc = None
+    if not ROOT_DIR:
+        try:
+            # root_dir will be the dir path of current document
+            ROOT_DIR = os.path.dirname(sc.getDocName())
+            if not ROOT_DIR:
+                raise Exception("No Root Dir")
+        except Exception:
+            err_msg = (
+                "Root dir is empty and script has no open or saved doc.\nEither open "
+                "a doc or save the doc or add a root dir in the script."
+            )
+            scerror(err_msg)
+            sys.exit(1)
+
+scdialog("Root dir is %s" % ROOT_DIR, "INFO")
 
 is_remove = True
 trash_name = "__cleanup"
 
 # make absolute so all paths from os.walk are absolute
-root_dir = os.path.abspath(root_dir)
+root_dir = os.path.abspath(ROOT_DIR)
 
 trash_dir = os.path.join(root_dir, trash_name)
 
@@ -107,15 +117,7 @@ info_msg = (
 if not sc:
     print info_msg
 else:
-    result = sc.messageBox(
-        "INFO",
-        info_msg,
-        sc.ICON_INFORMATION,
-        sc.BUTTON_OK | sc.BUTTON_DEFAULT,
-        sc.BUTTON_ABORT,
-    )
-    if result == sc.BUTTON_ABORT:
-        sys.exit(1)
+    scdialog(info_msg, "INFO")
 
 _mkdir_p(trash_dir)
 for image_path in images:

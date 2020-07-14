@@ -24,18 +24,18 @@ except Exception:
     sc = ScribusProxy()
 
 
-def scdebug(o, icon=sc.ICON_INFORMATION):
-    if DEBUG:
-        result = sc.messageBox(
-            "DEBUG", repr(o), icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT
-        )
-        if result == sc.BUTTON_ABORT:
-            sys.exit(1)
-
-
-def scerror(o, icon=sc.ICON_WARNING):
+def scdialog(text, title, icon=sc.ICON_INFORMATION):
     result = sc.messageBox(
-        "ERROR", o, icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT,
+        title, text, icon, sc.BUTTON_OK | sc.BUTTON_DEFAULT, sc.BUTTON_ABORT
     )
     if result == sc.BUTTON_ABORT:
         sys.exit(1)
+
+
+def scdebug(o, icon=sc.ICON_INFORMATION):
+    if DEBUG:
+        scdialog(repr(o), "DEBUG", icon)
+
+
+def scerror(text, icon=sc.ICON_WARNING):
+    scdialog(text, "ERROR", icon)
