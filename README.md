@@ -30,6 +30,11 @@ TODO
 
 Import text for a whole SLA from a single file. Uses XML markup to indicate changes of font face or size or paragraph style. Useful for more convenient text editing or translation or version control. 
 
+
+- tester si erreurs dans nom ParagpshStyle + CharStyle
+- Filtre implicite pour éviter les markups => text => text markups
+- changer le proxy pour traiter les constantes (erreur |)
+
 #### Doc
 
 TODO
