@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import sys
 
 DEBUG = True
@@ -12,12 +11,12 @@ except Exception:
             if name == "messageBox":
 
                 def _messageBox(*args, **kwargs):
-                    print "MessageBox %s" % args[1]
+                    print("MessageBox %s" % args[1])
 
                 return _messageBox
 
             def _missing(*args, **kwargs):
-                print "%s * %r ** %r" % (name, args, kwargs)
+                print("%s * %r ** %r" % (name, args, kwargs))
 
             return _missing
 

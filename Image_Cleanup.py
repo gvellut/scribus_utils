@@ -1,13 +1,12 @@
-# -*- coding: utf-8 -*-
 import codecs
 import errno
-from HTMLParser import HTMLParser
+from html.parser import HTMLParser
 import os
 import shutil
 import sys
 from types import ModuleType
 
-from common import sc, scdebug, scdialog, scerror
+from common import sc, scdialog, scerror
 
 ROOT_DIR = ""  # sys.argv[1]
 
@@ -15,7 +14,7 @@ if not isinstance(sc, ModuleType):
     # ScribusProxy is not a module => not in Scribus
     sc = None
     if not ROOT_DIR:
-        print "No root dir defined in script. Edit the script and change it."
+        print("No root dir defined in script. Edit the script and change it.")
         sys.exit(1)
 else:
     if not ROOT_DIR:
@@ -112,10 +111,16 @@ images.difference_update(sla_imgs)
 info_msg = (
     "%d images found in SLA\n%d images found in tree below ROOT DIR\n"
     "%d images to delete in tree\n%d images kept in tree\nwill delete=%r"
-) % (len(sla_imgs), imgs_found, len(images), imgs_found - len(images), is_remove,)
+) % (
+    len(sla_imgs),
+    imgs_found,
+    len(images),
+    imgs_found - len(images),
+    is_remove,
+)
 
 if not sc:
-    print info_msg
+    print(info_msg)
 else:
     scdialog(info_msg, "INFO")
 
@@ -129,5 +134,5 @@ for image_path in images:
     if is_remove:
         try:
             os.remove(image_path)
-        except Exception as ex:
-            print "There was an error removing %r" % image_path
+        except Exception:
+            print("There was an error removing %r" % image_path)

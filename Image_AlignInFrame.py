@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 Taken from https://wiki.sc.net/canvas/Align_an_Image_in_its_Frame
 No TkInter
@@ -21,7 +20,7 @@ There is minimal error checking, in particular no checking for frame type.
 
 import sys
 
-from common import sc, scdebug, scerror
+from common import sc, scerror
 
 
 def get_image_x(position, default=0.0):
@@ -60,7 +59,9 @@ if nbrSelected == 0:
     sys.exit(1)
 position = sc.valueDialog(
     "Image Position",
-    "     T = Top,     M = Middle,     B = Bottom     \n     L = Left,     C = Center,     R = Right     \n     Example: BL = Bottom Left",
+    "     T = Top,     M = Middle,     B = Bottom     \n"
+    "     L = Left,     C = Center,     R = Right     \n"
+    "     Example: BL = Bottom Left",
     "C",
 )
 
