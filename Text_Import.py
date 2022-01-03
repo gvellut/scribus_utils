@@ -1,12 +1,9 @@
-# -*- coding: utf-8 -*-
-
 import codecs
-import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 
-from common import sc, scdebug, scerror
+from common import sc, scerror
 
 # TODO tester linked frames
 
@@ -91,7 +88,7 @@ def read_data(data_file):
             content = []
         else:
             if not key:
-                print u"No key defined for %s" % line
+                print(u"No key defined for %s" % line)
                 continue
             content.append(line)
     if key:
@@ -235,6 +232,7 @@ def add_text(key, text, pstyles, cstyles):
         sc.insertText("\r", -1, key)
         cursor_pos += 1
         sc.selectText(cursor_pos - 1, -1, key)
+        # TODO deprecated: use setParagraphStyle
         sc.setStyle(current_style, key)
         sc.selectText(0, 0, key)  # deselect
 
@@ -335,8 +333,3 @@ def main_wrapper(argv):
 
 if __name__ == "__main__":
     main_wrapper(sys.argv)
-    # texts = read_data(data_file)
-    # print (repr(texts))
-
-    # xml = u'<text><paragraph><ps n="My Style" />Hell&gt;o &dem; World.</paragraph><paragraph></paragraph><paragraph>Second line <t s="24">with</t> My Style</paragraph><paragraph><ps n="" />This line has no style <t f="Times New Roman" s="18" c="Red" >but has</t> char styles and <cs n="superscript">font</cs> change</paragraph></text>'
-    # add_text("TEST", xml, set(), set())
