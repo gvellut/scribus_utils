@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 """
 To swap images around in a photobook (single image per page, same sizes)
 Select image then run. 
@@ -10,7 +9,7 @@ page, then the images between are moved to fill the gap
 
 import sys
 
-from common import sc, scdebug, scerror
+from common import sc, scerror
 
 
 def try_int(string):
