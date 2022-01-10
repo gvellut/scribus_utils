@@ -1,12 +1,3 @@
-"""
-To swap images around in a photobook (single image per page, same sizes)
-Select image then run. 
-In the dialog, enter the new page number for the image : the images
-will be swapped.
-If M prefix is used before the number: the selected image is moved to the selected
-page, then the images between are moved to fill the gap
-"""
-
 import os
 import re
 import sys
